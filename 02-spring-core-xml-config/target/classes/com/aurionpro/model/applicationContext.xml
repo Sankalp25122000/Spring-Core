@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Define your beans here -->
+
+	<!-- define the dependency -->
+	<bean id="weightLossDiet"
+		class="com.aurionpro.model.WeightLossDiet">
+	</bean>
+
+	<bean id="sportsDiet"
+		class="com.aurionpro.model.SportsDiet">
+	</bean>
+
+	<bean id="cricketCoach" class="com.aurionpro.model.CricketCoach">
+		<property name="diet" ref="weightLossDiet"></property>
+		<property name="email" value = "san@gmail.com"></property>
+		<property name="name" value = "sankalp"></property>
+	</bean>
+	<bean id="basketBallCoach" class="com.aurionpro.model.BasketBallCoach">
+		<property name="diet" ref=" sportsDiet"> </property>   <!--setterinjection -->
+	</bean>
+
+
+	<!--<bean 
+		id="myCoach" class="com.techlabs.SpringDemo.TrackCoach">
+		<constructor-arg ref="myDietService"></constructor-arg>
+	</bean>
+-->
+
+</beans>

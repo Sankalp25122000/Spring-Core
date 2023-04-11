@@ -1,0 +1,43 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans.xsd 
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Define your beans here -->
+
+	<!-- define the dependency -->
+	<!--<bean id="myDietService"
+		class="com.techlabs.SpringDemo.AthleteDiet">
+	</bean>
+-->
+<context:property-placeholder location = "classpath:spring.properties"/>
+	<bean id="weightLossDiet" class="com.aurionpro.model.WeightLossDiet"></bean>
+	<bean id="sportDiet" class="com.aurionpro.model.SportDiet">
+	</bean>
+
+
+	<bean id="cricketCoach" class="com.aurionpro.model.CricketCoach" scope ="prototype">
+		<property name="diet" ref="weightLossDiet"></property>
+		<property name="name" value="${name}"></property>
+		<property name="email" value="${email}"></property>
+		<!--<constructor-arg ref="weightLossDiet"></constructor-arg>-->
+	</bean>
+	<bean id="basketBallCoach" class="com.aurionpro.model.BasketballCoach"
+	  init-method="initMethod" destroy-method="destroyMethod">
+		<property name="diet" ref="sportDiet"></property>
+		<property name="name" value="${name}"></property>
+		<property name="email" value="${email}"></property>
+		<!--<constructor-arg ref="sportDiet"></constructor-arg>-->
+	</bean>
+
+
+	<!--<bean 
+		id="myCoach" class="com.techlabs.SpringDemo.TrackCoach">
+		<constructor-arg ref="myDietService"></constructor-arg>
+	</bean>
+-->
+
+</beans>
