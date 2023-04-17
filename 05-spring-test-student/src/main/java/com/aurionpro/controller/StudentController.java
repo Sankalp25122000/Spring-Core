@@ -53,10 +53,12 @@ public class StudentController {
 	private void deleteStudentById(@PathVariable(name = "stuId")int id) {
 	      studentService.deleteStudentById(id);
 		}
-	@DeleteMapping("/students")
+	@DeleteMapping("/students")   //endpoints are not designed to delete all data but here the method is only for education purpose
 	private void deleteAllStudents() {
 		studentService.deleteAll();
 		
 	}
+	
+	
 	
 }
