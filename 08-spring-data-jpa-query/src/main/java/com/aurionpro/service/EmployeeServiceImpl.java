@@ -71,6 +71,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 //		return repository.findTop3SalariedEmp();
 //	}
 
+	@Override
+	public List<Employee> findEmployeesByNameList(List<String> names) {
+		// TODO Auto-generated method stub
+		return repository.findEmployeesByNameList(names);
+	}
+
 
 	
 

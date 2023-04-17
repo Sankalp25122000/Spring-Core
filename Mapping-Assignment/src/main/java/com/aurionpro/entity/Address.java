@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Transactional
-@Table(name = "adress")
+@Table(name = "address")
 public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

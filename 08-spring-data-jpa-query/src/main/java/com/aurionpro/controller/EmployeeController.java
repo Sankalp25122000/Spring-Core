@@ -71,6 +71,11 @@ public class EmployeeController {
 		return employeeService.findTopEmployeesSalary(count);
 	}
 	
+	@GetMapping("/employees/nameList")
+	public List<Employee> findEmployeesByNameList(@RequestParam List<String> names) {
+		return employeeService.findEmployeesByNameList(names);
+	}
+	
 	
 	
 	@PostMapping("/employees")

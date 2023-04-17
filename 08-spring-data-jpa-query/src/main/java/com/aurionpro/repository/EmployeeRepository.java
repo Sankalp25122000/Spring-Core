@@ -50,5 +50,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 //	List<Employee> findTop3SalariedEmp();
 //
 //	
+   //find employee by list
+	@Query("select e from Employee e where e.name in ?1")
+	List<Employee> findEmployeesByNameList(List<String> names);
 
 }

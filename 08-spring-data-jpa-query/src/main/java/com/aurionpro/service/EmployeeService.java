@@ -25,6 +25,8 @@ public interface EmployeeService {
 
 	List<Employee> findTopEmployeesSalary(int count);
 
+	List<Employee> findEmployeesByNameList(List<String> names);
+
 
 //	List<Employee> findTop3SalariedEmp();
 
