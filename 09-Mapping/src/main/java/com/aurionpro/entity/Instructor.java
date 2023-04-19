@@ -1,9 +1,14 @@
 package com.aurionpro.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,24 +33,27 @@ public class Instructor {
 	private String email;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_instructor_id")
+	@JoinColumn(name = "fk_instructor_details_id")
+	@JsonIgnore
 	private Instructor_details details;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fk_course_id",referencedColumnName = "instructor_id")
-	private List<Course> courses;
+//	@JsonIgnore
+	@OneToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+	@JoinColumn(name = "fk_instructor_id",referencedColumnName = "instructor_id")
+//	@JsonIgnoreProperties
+	private Set<Course> courses;
 
 	public Instructor() {
 		super();
 	}
 
-	public Instructor(Long id, String name, String email, Instructor_details details, List<Course> courses) {
+	public Instructor(Long id, String name, String email, Instructor_details details, Set<Course> courses) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.details = details;
-		this.courses = new ArrayList<>();
+		this.courses = new HashSet<>();
 	}
 
 	public Instructor_details getDetails() {
@@ -56,11 +64,11 @@ public class Instructor {
 		this.details = details;
 	}
 
-	public List<Course> getCourses() {
+	public Set<Course> getCourses() {
 		return courses;
 	}
 
-	public void setCourses(List<Course> courses) {
+	public void setCourses(Set<Course> courses) {
 		this.courses = courses;
 	}
 
