@@ -41,4 +41,9 @@ public class CustomerController {
 	public ResponseEntity<String> updateCustomerDetails(@RequestBody Customer customerData){
 		return customerService.updateCustomerDetails(customerData);
 	}
+	
+	@PostMapping("/createAccount")
+	public ResponseEntity<String> createAccount(@RequestBody Customer accountData){
+		return customerService.createAccount(accountData);
+	}
 }

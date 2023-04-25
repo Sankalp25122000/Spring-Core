@@ -79,10 +79,10 @@ public class Bank {
 		this.accounts = accounts;
 	}
 
-	@Override
-	public String toString() {
-		return "Bank [bankId=" + bankId + ", fullName=" + fullName + ", shortName=" + shortName + ", accounts="
-				+ accounts + "]";
-	}
+	/*
+	 * @Override public String toString() { return "Bank [bankId=" + bankId +
+	 * ", fullName=" + fullName + ", shortName=" + shortName + ", accounts=" +
+	 * accounts + "]"; }
+	 */
 
 }

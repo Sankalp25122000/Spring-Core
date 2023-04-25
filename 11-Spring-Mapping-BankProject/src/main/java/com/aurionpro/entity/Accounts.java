@@ -24,7 +24,7 @@ import jakarta.persistence.Table;
 public class Accounts {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_no")
 	private Long accountNo;
 
@@ -32,7 +32,7 @@ public class Accounts {
 
 	@ManyToOne
 	@JoinColumn(name = "fk_bank_id")
-//	@JsonIgnore
+	@JsonIgnore
 	private Bank bank;
 
 	@ManyToOne
@@ -97,10 +97,10 @@ public class Accounts {
 		this.transactions = transactions;
 	}
 
-	@Override
-	public String toString() {
-		return "Accounts [accountNo=" + accountNo + ", balance=" + balance + ", bank=" + bank + ", customer=" + customer
-				+ ", transactions=" + transactions + "]";
-	}
+	/*
+	 * @Override public String toString() { return "Accounts [accountNo=" +
+	 * accountNo + ", balance=" + balance + ", bank=" + bank + ", customer=" +
+	 * customer + ", transactions=" + transactions + "]"; }
+	 */
 
 }
