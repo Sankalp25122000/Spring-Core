@@ -27,30 +27,33 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		String header = request.getHeader("Authorization");
 
-        if (header == null || !header.startsWith(SecurityConstants.BEARER)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+		if (header == null || !header.startsWith(SecurityConstants.BEARER)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
-        String token = header.replace(SecurityConstants.BEARER, "");
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
-        .build()
-        .verify(token);
-        
-        Collection<GrantedAuthority> authorities= new ArrayList<GrantedAuthority>();
-        String user =  decodedJWT.getSubject();
-        List<String> roles = Arrays.asList(decodedJWT.getClaim("roles").toString().replace("\"", "").split("\\s*,\\s*"));
-        for(String r:roles) {
-        	authorities.add(new SimpleGrantedAuthority(r));
-        }
-        System.out.println(authorities);
-        
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(request, response);
-    }
+		String token = header.replace(SecurityConstants.BEARER, "");
+		DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY)).build().verify(token);
+
+		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		String user = decodedJWT.getSubject();
+		List<String> roles = Arrays
+				.asList(decodedJWT.getClaim("roles").toString().replace("\"", "").split("\\s*,\\s*"));
+		System.out.println(roles);
+		if (roles.size() > 1)
+
+			for (String r : roles) {
+				authorities.add(new SimpleGrantedAuthority(r));
+			}
+		System.out.println(authorities);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		filterChain.doFilter(request, response);
+	}
 }

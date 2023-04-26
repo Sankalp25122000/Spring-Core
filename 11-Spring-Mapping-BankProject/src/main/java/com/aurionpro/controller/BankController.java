@@ -37,7 +37,7 @@ public class BankController {
 		return bankService.getBanks();
 	}
 
-	@PutMapping("/updataBankDetails")
+	@PutMapping("/updateBankDetails")
 	private ResponseEntity<String> updateBankDetails(@RequestBody Bank bankData){
 		return bankService.updateBankDetails(bankData);
 	}
