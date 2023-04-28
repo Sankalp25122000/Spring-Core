@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +22,7 @@ import com.aurionpro.repository.TransactionRepository;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
-	
+
 	@Autowired
 	private TransactionRepository transactionRepository;
 
@@ -39,14 +43,14 @@ public class TransactionServiceImpl implements TransactionService {
 
 				// All About Sender
 				Accounts senderAccount = accountRepository.findById(transactionData.getSender()).get();
-				
+
 				boolean flag = false;
-				if((senderAccount.getBalance()-transactionData.getAmount()<0)){
+				if ((senderAccount.getBalance() - transactionData.getAmount() < 0)) {
 					flag = true;
 				}
-				
-				if(!flag) {
-				
+
+				if (!flag) {
+
 					senderAccount.setBalance(senderAccount.getBalance() - transactionData.getAmount());
 					transactionData.setBalance(senderAccount.getBalance());
 
@@ -78,9 +82,9 @@ public class TransactionServiceImpl implements TransactionService {
 //											}
 					transactionList1.add(transactionData);
 					receiverAccount.setTransactions(transactionList1);
-					
+
 					accountRepository.save(receiverAccount);
-					//transactionData.setTransactionNo();
+					// transactionData.setTransactionNo();
 					Transaction newTransaction = new Transaction();
 					newTransaction.setAccounts(transactionData.getAccounts());
 					newTransaction.setAmount(transactionData.getAmount());
@@ -88,26 +92,26 @@ public class TransactionServiceImpl implements TransactionService {
 					newTransaction.setReceiver(transactionData.getReceiver());
 					newTransaction.setSender(transactionData.getSender());
 					newTransaction.setTransactionDate(transactionData.getTransactionDate());
-					
+
 					System.out.println();
-					//transactionRepository.save(newTransaction);
+					// transactionRepository.save(newTransaction);
 
 					// senderAccount.setTransactions(transactionData);
 
 					Customer senderCustomer = customerRepository.findById(senderAccount.getCustomer().getCustomerId())
 							.get();
 					totalBalance(senderCustomer);
-					Customer receiverCustomer = customerRepository.findById(receiverAccount.getCustomer().getCustomerId())
-							.get();
+					Customer receiverCustomer = customerRepository
+							.findById(receiverAccount.getCustomer().getCustomerId()).get();
 					totalBalance(receiverCustomer);
 
 					return ResponseEntity.ok("Transaction data saved");
 				}
-				
+
 			}
 		}
 
-		return new ResponseEntity<>("Balance is insufficient",HttpStatus.EXPECTATION_FAILED);
+		return new ResponseEntity<>("Balance is insufficient", HttpStatus.EXPECTATION_FAILED);
 	}
 
 	private void totalBalance(Customer dbData) {
@@ -140,5 +144,22 @@ public class TransactionServiceImpl implements TransactionService {
 	public ResponseEntity<String> updateTransactionDetails(Transaction transactionData) {
 		transactionRepository.save(transactionData);
 		return ResponseEntity.ok("Transaction data updated");
+	}
+
+	@Override
+	public Page<Transaction> getTransactionPagination(int pageNumber, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		return transactionRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page<Transaction> getTransactionPaginationInSort(int pageNumber, int pageSize, String sortProperty) {
+		Pageable pageable = null;
+		if (null != sortProperty) {
+			pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortProperty);
+		} else {
+			pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, "name");
+		}
+		return transactionRepository.findAll(pageable);
 	}
 }

@@ -3,6 +3,10 @@ package com.aurionpro.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +56,7 @@ public class BankServiceImpl implements BankService {
 		bank.setShortName(bankData.getShortName());
 		bankRepository.save(bank);
 
-		//bankRepository.save(bankData);
+		// bankRepository.save(bankData);
 		return ResponseEntity.ok("Bank data updated");
 	}
 
@@ -78,4 +82,20 @@ public class BankServiceImpl implements BankService {
 		return ResponseEntity.ok("Account added");
 	}
 
+	@Override
+	public Page<Bank> getBankPagination(int pageNumber, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		return bankRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page<Bank> getBankPaginationInSort(int pageNumber, int pageSize, String sortProperty) {
+		Pageable pageable = null;
+		if (null != sortProperty) {
+			pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortProperty);
+		} else {
+			pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, "name");
+		}
+		return bankRepository.findAll(pageable);
+	}
 }
